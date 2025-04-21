@@ -67,8 +67,7 @@ export CFLAGS="\
     --prefix="${INSTALL_PATH}" \
     --enable-optimizations \
     --with-lto=full \
-    --with-computed-gotos \
-    --with-strict-overflow
+    --with-computed-gotos
 
 make
 make altinstall
