@@ -9,23 +9,16 @@
 
 set -e -u
 
-ROOT_ID=0
-
 URL="$1"
 DIGEST="$2"
 INSTALL_PATH="$3"
 
-if [ "$(id -u)" -ne "${ROOT_ID}" ]; then
-    echo "${0##*/}: Must run with root privileges." >&2
-    exit 1
-fi
-
 # Essential dependency packages.
-apt-get update -y
-apt-get upgrade -y
-apt-get build-dep -y python3
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get build-dep -y python3
 # NOTE: libmpdec-dev removed from debian 12.
-apt-get install -y \
+sudo apt-get install -y \
     wget \
     pkg-config \
     build-essential \
