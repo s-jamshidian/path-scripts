@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# Compile python from source.
+# Compile python from source on Debian or Debian derivative operating systems.
 # Arguments:
 #    - Download link of python.
 #    - MD5 hexadecimal digest of pythons' compressed tarball.
 #    - Existing Path to install python in.
-#============================================================
+###############################################################################
 
 set -e -u
 
@@ -20,7 +20,6 @@ sudo apt-get build-dep -y python3
 # NOTE: libmpdec-dev removed from debian 12.
 sudo apt-get install -y \
     wget \
-    pkg-config \
     build-essential \
     gdb \
     lcov \
@@ -40,8 +39,10 @@ sudo apt-get install -y \
     uuid-dev \
     zlib1g-dev
 
-tempdir="/tmp/tempdir_$$"
-mkdir "${tempdir}"
+tempdir="$(mktemp -d)"
+
+trap 'rm -rf "${tempdir}"' EXIT
+
 cd "${tempdir}"
 
 filename="${URL##*/}"
@@ -53,7 +54,7 @@ echo "${DIGEST} *${filename}" | md5sum -c
 tar -x -a -f "${filename}"
 cd "$(tar -t -f "${filename}" | head -n 1 | cut -d / -f 1)"
 
-# Essential flags
+# Optimization flags
 export LDFLAGS="-flto"
 export CFLAGS="\
 -O3 \
@@ -69,10 +70,7 @@ export CFLAGS="\
     --with-lto=full \
     --with-computed-gotos
 
-make
+make -j "$(nproc)"
 make altinstall
-
-cd /tmp
-rm -rf "${tempdir}"
 
 echo "All Done!"
