@@ -39,7 +39,10 @@ sudo apt-get install -y \
     uuid-dev \
     zlib1g-dev
 
-tempdir="$(mktemp -d)"
+if ! tempdir="$(mktemp -d 2>/dev/null)"; then
+    tempdir="/tmp/$$"
+    mkdir "${tempdir}"
+fi
 
 trap 'rm -rf "${tempdir}"' EXIT
 
@@ -70,7 +73,7 @@ export CFLAGS="\
     --with-lto=full \
     --with-computed-gotos
 
-make -j "$(nproc)"
+make -j "$(nproc || echo 1)"
 make altinstall
 
 echo "All Done!"
