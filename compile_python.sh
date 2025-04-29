@@ -15,7 +15,6 @@ INSTALL_PATH="$3"
 
 # Essential dependency packages.
 sudo apt-get update -y
-sudo apt-get upgrade -y
 sudo apt-get build-dep -y python3
 # NOTE: libmpdec-dev removed from debian 12.
 sudo apt-get install -y \
