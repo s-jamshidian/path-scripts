@@ -44,7 +44,7 @@ if ! tempdir="$(mktemp -d 2>/dev/null)"; then
     mkdir "${tempdir}"
 fi
 
-trap 'rm -rf "${tempdir}"' EXIT
+trap 'rm -rf -- "${tempdir}"' EXIT
 
 cd "${tempdir}"
 
