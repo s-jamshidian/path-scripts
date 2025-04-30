@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# Compile python from source on Debian or Debian derivative operating systems.
+# Compile CPython from source on Debian or Debian derivative operating systems.
 # Arguments:
-#    - Download link of python.
-#    - MD5 hexadecimal digest of pythons' compressed tarball.
-#    - Existing Path to install python in.
+#    - Download link of CPython.
+#    - MD5 hexadecimal digest of CPythons' compressed tarball.
+#    - Existing Path to install CPython in.
 ###############################################################################
 
 set -e -u
