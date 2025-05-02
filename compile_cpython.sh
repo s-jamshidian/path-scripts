@@ -54,7 +54,7 @@ while getopts ':hd:' option; do
         *) usage "${STDERR}" "${E_USAGE}" ;;
     esac
 done
-shift $((OPTIND - 1))
+shift "$((OPTIND - 1))"
 [ "$#" -ne "${N_ARGS}" ] && usage "${STDERR}" "${E_USAGE}"
 url="$1"
 digest="$2"
@@ -102,11 +102,11 @@ extracted_dir="$(tar -t -f "${filename}" | head -n 1 | cut -d / -f 1)"
 cd -- "${extracted_dir}"
 
 # Optimization flags
-export LDFLAGS="-flto"
-export CFLAGS="-O3 -flto -pipe -mtune=native -march=native"
+export LDFLAGS='-flto'
+export CFLAGS='-O3 -flto -pipe -mtune=native -march=native'
 
 ./configure \
-    ${install_path:+--prefix="${install_path}"} \
+    ${install_path:+"--prefix=${install_path}"} \
     --enable-optimizations \
     --with-lto=full \
     --with-computed-gotos
@@ -114,4 +114,4 @@ export CFLAGS="-O3 -flto -pipe -mtune=native -march=native"
 make -j "$(nproc 2>/dev/null || echo 1)"
 make altinstall
 
-echo "All Done!"
+echo 'All Done!'
