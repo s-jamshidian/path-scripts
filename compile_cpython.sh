@@ -4,16 +4,16 @@
 
 set -e -u
 
-PROG="${0##*/}"
-N_ARGS=2
+readonly PROG="${0##*/}"
+readonly N_ARGS=2
 
 # Exit codes:
-E_OK=0
-E_USAGE=79
+readonly E_OK=0
+readonly E_USAGE=79
 
 # File descriptors:
-STDOUT=1
-STDERR=2
+readonly STDOUT=1
+readonly STDERR=2
 
 # Write usage message to the specified file descriptor and exit the shell.
 # Globals:
@@ -56,8 +56,8 @@ while getopts ':hd:' option; do
 done
 shift "$((OPTIND - 1))"
 [ "$#" -ne "${N_ARGS}" ] && usage "${STDERR}" "${E_USAGE}"
-url="$1"
-digest="$2"
+readonly URL="$1"
+readonly CHECKSUM="$2"
 
 # Essential dependency packages.
 sudo apt-get update -y
@@ -91,11 +91,11 @@ fi
 trap 'rm -r -f -- "${tempdir}"' EXIT
 cd -- "${tempdir}"
 
-filename="${url##*/}"
+filename="${URL##*/}"
 filename="${filename%%[?#]*}" # Strip URL parameters/fragments
 
-wget -nv --show-progress -O "${filename}" -- "${url}"
-echo "${digest} *${filename}" | md5sum -c
+wget -nv --show-progress -O "${filename}" -- "${URL}"
+echo "${CHECKSUM} *${filename}" | md5sum -c
 
 tar -x -a -f "${filename}"
 extracted_dir="$(tar -t -f "${filename}" | head -n 1 | cut -d / -f 1)"
