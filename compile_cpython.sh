@@ -84,10 +84,7 @@ sudo apt-get install -y \
     uuid-dev \
     zlib1g-dev
 
-if ! tempdir="$(mktemp -d 2>/dev/null)"; then
-    tempdir="/tmp/$$"
-    mkdir -- "${tempdir}"
-fi
+! tempdir="$(mktemp -d 2>/dev/null)" && tempdir="/tmp/$$" && mkdir -- "${tempdir}"
 trap 'rm -r -f -- "${tempdir}"' EXIT
 cd -- "${tempdir}"
 
